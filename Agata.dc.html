@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  body { margin: 0; font-family: 'Montserrat', sans-serif; }
+  a { color: #A42B23; }
+  a:hover { color: #8F241D; }
+  .reveal-on-scroll { opacity:0; transform:translateY(36px); transition:opacity 800ms ease, transform 800ms ease; }
+  .reveal-on-scroll.is-revealed { opacity:1; transform:translateY(0); }
+</style>
+<style>
+@media (max-width: 1400px) {
+  header nav { display: none !important; }
+  header > div:nth-child(3) { display: none !important; }
+}
+@media (max-width: 900px) {
+  header { padding: 0 20px !important; }
+  div[data-desc-grid] { grid-template-columns: 1fr !important; }
+  section h1 { font-size: 38px !important; }
+  section h2 { font-size: 26px !important; }
+}
+@media (max-width: 700px) {
+  div[data-plants-grid] { grid-template-columns: repeat(2, 1fr) !important; }
+}
+@media (max-width: 480px) {
+  div[data-plants-grid] { grid-template-columns: 1fr !important; }
+}
+</style>
+</helmet>
+
+<div style="position:relative; width:100%; background:#FFFFFF; overflow:hidden;">
+
+  <!-- HEADER -->
+  <header style="position:absolute; top:16px; left:5%; right:5%; z-index:999; background:rgba(255,255,255,0.92); backdrop-filter:blur(20px); border-radius:999px; height:56px; display:flex; align-items:center; justify-content:space-between; padding:0 22px; box-shadow:0 20px 60px rgba(0,0,0,0.08);">
+    <a href="Home.dc.html" style="display:flex; align-items:center; flex-shrink:0;">
+      <img src="assets/logo-raposo-transparent.png" alt="Raposo Empreendimentos" style="height:34px; width:auto;" />
+    </a>
+    <nav style="display:flex; gap:34px;">
+      <sc-for list="{{ navItems }}" as="item" hint-placeholder-count="6">
+        <a href="#" style="color:#1E1E1E; text-decoration:none; font-size:12.5px; font-weight:500; letter-spacing:0.2px; white-space:nowrap; transition:color 300ms;" style-hover="color:#A42B23;">{{ item }}</a>
+      </sc-for>
+    </nav>
+    <div style="display:flex; gap:8px; flex-shrink:0;">
+      <a href="#" style="padding:7px 12px; border-radius:999px; border:1px solid rgba(164,43,35,0.18); color:#1E1E1E; text-decoration:none; font-size:10px; font-weight:600; white-space:nowrap; transition:all 300ms;" style-hover="background:#1E1E1E; color:#FFFFFF; border-color:#1E1E1E;">Contato</a>
+      <a href="#" style="padding:7px 14px; border-radius:999px; background:#A42B23; color:#FFFFFF; text-decoration:none; font-size:10px; font-weight:600; white-space:nowrap; transition:background 300ms;" style-hover="background:#8F241D;">Fale Conosco</a>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <div style="position:relative; width:100%; aspect-ratio:2.0/1; min-height:520px; max-height:720px; overflow:hidden;">
+    <img src="assets/agata-02.jpg" alt="Ágata Residence — Raposo Empreendimentos" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;" />
+    <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.15) 40%, rgba(0,0,0,0.6) 100%);"></div>
+    <div style="position:relative; z-index:2; max-width:1280px; height:100%; margin:0 auto; display:flex; flex-direction:column; justify-content:flex-end; gap:24px; padding:0 56px 64px; box-sizing:border-box;">
+      <span style="align-self:flex-start; padding:6px 14px; border-radius:999px; background:#A42B23; color:#FFFFFF; font-size:11px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase;">Em Obras</span>
+      <img src="assets/logo-agata-trimmed.png" alt="Ágata Residence" style="height:70px; width:auto; align-self:flex-start;" />
+      <div style="display:flex; gap:28px; flex-wrap:wrap;">
+        <sc-for list="{{ quickFacts }}" as="fact" hint-placeholder-count="4">
+          <div style="display:flex; flex-direction:column; gap:2px;">
+            <span style="color:#FFFFFF; font-size:18px; font-weight:700;">{{ fact.value }}</span>
+            <span style="color:rgba(255,255,255,0.7); font-size:12px; font-weight:500; letter-spacing:0.04em; text-transform:uppercase;">{{ fact.label }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <!-- VENDAS + DESCRIÇÃO -->
+  <section style="background:#F7F2F1; padding:72px 24px;">
+    <div class="reveal-on-scroll" style="max-width:1280px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:start;" data-desc-grid="true">
+      <div style="display:flex; flex-direction:column; gap:20px;">
+        <span style="color:#A42B23; font-size:12px; font-weight:700; letter-spacing:2px; text-transform:uppercase;">Sobre o Empreendimento</span>
+        <p style="margin:0; color:#1E1E1E; font-size:16px; line-height:1.8;">Assim como a pedra <strong>ágata</strong>, conhecida por sua beleza singular e propriedades terapêuticas, o Ágata Residence representa um oásis de equilíbrio e bem-estar no coração do bairro Iguaçu. A ágata, ao longo dos séculos, foi reverenciada por suas propriedades de estabilidade e equilíbrio.</p>
+        <p style="margin:0; color:#1E1E1E; font-size:16px; line-height:1.8;">Da mesma forma, o Ágata Residence foi meticulosamente projetado para oferecer a você e sua família um ambiente seguro, estável e harmonioso para chamar de lar. Invista em um estilo de vida que prioriza qualidade e conforto.</p>
+        <a href="https://wa.me/553138218387" target="_blank" rel="noopener" style="align-self:flex-start; margin-top:8px; height:46px; box-sizing:border-box; display:flex; align-items:center; padding:0 28px; border-radius:999px; background:#A42B23; color:#FFFFFF; text-decoration:none; font-size:13px; font-weight:600; transition:all 300ms;" style-hover="background:#8F241D; transform:scale(1.03);">Falar com um Consultor</a>
+      </div>
+
+      <div style="background:#FFFFFF; border-radius:20px; padding:32px; display:flex; flex-direction:column; gap:20px; box-shadow:0 14px 32px rgba(0,0,0,0.06);">
+        <div style="display:flex; align-items:center; justify-content:space-between;">
+          <span style="color:#1E1E1E; font-size:13px; font-weight:600;">Unidades Vendidas</span>
+          <span style="color:#A42B23; font-size:22px; font-weight:700; font-family:'Playfair Display', serif;">65%</span>
+        </div>
+        <div style="height:8px; border-radius:999px; background:#F0E9E7; overflow:hidden;">
+          <div style="height:100%; width:65%; background:#A42B23; border-radius:999px;"></div>
+        </div>
+        <div style="height:1px; background:rgba(0,0,0,0.08); margin:4px 0;"></div>
+        <span style="color:#1E1E1E; font-size:13px; font-weight:600;">Localização</span>
+        <span style="color:#666666; font-size:14px; line-height:1.6;">R. Moema, 60 - Iguaçu, Ipatinga - MG, 35162-096, Brasil</span>
+        <a href="https://wa.me/553138218387" target="_blank" rel="noopener" style="align-self:flex-start; height:42px; box-sizing:border-box; display:flex; align-items:center; padding:0 22px; border-radius:999px; background:#1E1E1E; color:#FFFFFF; text-decoration:none; font-size:13px; font-weight:600; transition:all 300ms;" style-hover="background:#000000;">Falar com um Consultor</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALERIA -->
+  <section style="background:#FFFFFF; padding:64px 24px 88px;">
+    <div class="reveal-on-scroll" style="max-width:1280px; margin:0 auto; display:flex; flex-direction:column; gap:36px;">
+      <h2 style="margin:0; color:#1E1E1E; font-family:'Playfair Display', serif; font-size:32px; font-weight:600;">Galeria de Imagens</h2>
+      <div style="position:relative; border-radius:16px; overflow:hidden; aspect-ratio:16/9; background:#1a1c19;">
+        <img src="{{ galleryImage }}" alt="Ágata Residence" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;" />
+        <button aria-label="Imagem anterior" onClick="{{ galleryPrev }}" style="position:absolute; left:20px; top:50%; transform:translateY(-50%); width:44px; height:44px; border-radius:999px; background:rgba(255,255,255,0.16); border:1.5px solid rgba(255,255,255,0.5); backdrop-filter:blur(6px); color:#FFFFFF; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 300ms;" style-hover="background:#A42B23; border-color:#A42B23;">‹</button>
+        <button aria-label="Próxima imagem" onClick="{{ galleryNext }}" style="position:absolute; right:20px; top:50%; transform:translateY(-50%); width:44px; height:44px; border-radius:999px; background:rgba(255,255,255,0.16); border:1.5px solid rgba(255,255,255,0.5); backdrop-filter:blur(6px); color:#FFFFFF; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 300ms;" style-hover="background:#A42B23; border-color:#A42B23;">›</button>
+        <span style="position:absolute; bottom:16px; right:20px; padding:6px 14px; border-radius:999px; background:rgba(0,0,0,0.45); color:#FFFFFF; font-size:12px; font-weight:600;">{{ galleryPosition }}</span>
+      </div>
+      <div style="display:flex; gap:10px; overflow-x:auto; padding-bottom:4px;">
+        <sc-for list="{{ galleryThumbs }}" as="thumb" hint-placeholder-count="13">
+          <button aria-label="Selecionar imagem" onClick="{{ thumb.onClick }}" style="{{ thumb.style }}">
+            <img src="{{ thumb.src }}" alt="Miniatura" style="width:100%; height:100%; object-fit:cover;" />
+          </button>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOOK DO EMPREENDIMENTO -->
+  <section style="background:#FFFFFF; padding:0 24px 64px;">
+    <div class="reveal-on-scroll" style="max-width:1280px; margin:0 auto; background:#2B1512; border-radius:20px; padding:40px 48px; display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap;">
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <span style="color:#D86A61; font-size:12px; font-weight:700; letter-spacing:2px; text-transform:uppercase;">Material Completo</span>
+        <h2 style="margin:0; color:#FFFFFF; font-family:'Playfair Display', serif; font-size:26px; font-weight:600;">Book Digital do Ágata Residence</h2>
+        <span style="color:rgba(255,255,255,0.65); font-size:14px;">Plantas, memorial e diferenciais em um só arquivo.</span>
+      </div>
+      <a href="https://drive.google.com/drive/folders/1s46leq848OxjSw6jJgNKTSQhXXkdwqO_?usp=sharing" target="_blank" rel="noopener" style="height:48px; box-sizing:border-box; display:flex; align-items:center; padding:0 30px; border-radius:999px; background:#A42B23; color:#FFFFFF; text-decoration:none; font-size:14px; font-weight:600; transition:all 300ms; flex-shrink:0;" style-hover="background:#8F241D; transform:scale(1.03);">Baixar Book Completo</a>
+    </div>
+  </section>
+
+  <!-- PLANTAS -->
+  <section style="background:#F7F2F1; padding:88px 24px;">
+    <div class="reveal-on-scroll" style="max-width:1280px; margin:0 auto; display:flex; flex-direction:column; gap:36px;">
+      <h2 style="margin:0; color:#1E1E1E; font-family:'Playfair Display', serif; font-size:32px; font-weight:600;">Plantas</h2>
+      <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:24px;" data-plants-grid="true">
+        <sc-for list="{{ floorplans }}" as="plan" hint-placeholder-count="6">
+          <div style="display:flex; flex-direction:column; gap:14px; background:#FFFFFF; border-radius:16px; overflow:hidden; box-shadow:0 12px 28px rgba(0,0,0,0.05);">
+            <div style="aspect-ratio:1/1; background:#2B1512;">
+              <img src="{{ plan.image }}" alt="{{ plan.title }}" style="width:100%; height:100%; object-fit:cover;" />
+            </div>
+            <span style="padding:0 16px 16px; color:#1E1E1E; font-size:13px; font-weight:600; line-height:1.4;">{{ plan.title }}</span>
+          </div>
+        </sc-for>
+        <div style="grid-column:span 2; display:flex; flex-direction:column; gap:14px; background:#FFFFFF; border-radius:16px; overflow:hidden; box-shadow:0 12px 28px rgba(0,0,0,0.05);">
+          <div style="aspect-ratio:2/1; background:#2B1512;">
+            <img src="assets/agata-panorama-localizacao.jpg" alt="Localização Ágata Residence" style="width:100%; height:100%; object-fit:cover;" />
+          </div>
+          <span style="padding:0 16px 16px; color:#1E1E1E; font-size:13px; font-weight:600; line-height:1.4;">Localização Privilegiada</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EVOLUÇÃO DE OBRA -->
+  <section style="background:#FFFFFF; padding:88px 24px;">
+    <div class="reveal-on-scroll" style="max-width:1280px; margin:0 auto; display:flex; flex-direction:column; gap:36px;">
+      <div style="display:flex; align-items:flex-end; justify-content:space-between; gap:24px; flex-wrap:wrap;">
+        <h2 style="margin:0; color:#1E1E1E; font-family:'Playfair Display', serif; font-size:32px; font-weight:600;">Evolução de Obra</h2>
+        <a href="#" style="color:#1E1E1E; text-decoration:none; font-size:13px; font-weight:600; transition:color 250ms;" style-hover="color:#A42B23;">Ficha Técnica →</a>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:22px;">
+        <sc-for list="{{ progress }}" as="step" hint-placeholder-count="6">
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <div style="display:flex; align-items:center; justify-content:space-between;">
+              <span style="color:#1E1E1E; font-size:14px; font-weight:600;">{{ step.label }}</span>
+              <span style="color:#A42B23; font-size:14px; font-weight:700;">{{ step.percent }}%</span>
+            </div>
+            <div style="height:8px; border-radius:999px; background:#F0E9E7; overflow:hidden;">
+              <div style="{{ step.barStyle }}"></div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOCALIZAÇÃO -->
+  <section style="background:#F7F2F1; padding:88px 24px;">
+    <div class="reveal-on-scroll" style="max-width:1280px; margin:0 auto; display:flex; flex-direction:column; gap:24px;">
+      <h2 style="margin:0; color:#1E1E1E; font-family:'Playfair Display', serif; font-size:32px; font-weight:600;">Onde Estamos</h2>
+      <iframe src="https://maps.google.com/maps?q=R.%20Moema%2C%2060%2C%20Igua%C3%A7u%2C%20Ipatinga%2C%20MG%2C%2035162-096%2C%20Brasil&t=m&z=15&output=embed&iwloc=near" title="Localização Ágata Residence" style="width:100%; height:400px; border:none; border-radius:16px;" allowfullscreen="true" loading="lazy"></iframe>
+    </div>
+  </section>
+
+  <!-- RODAPÉ -->
+  <footer style="background:#1E1E1E; padding:64px 56px 32px;">
+    <div style="max-width:1280px; margin:0 auto; display:flex; flex-direction:column; gap:40px;">
+      <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:40px; flex-wrap:wrap;">
+        <div style="display:flex; gap:64px; flex-wrap:wrap;">
+          <div style="display:flex; flex-direction:column; gap:12px;">
+            <span style="color:#D86A61; font-size:13px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;">Menu</span>
+            <sc-for list="{{ navItems }}" as="item" hint-placeholder-count="6">
+              <a href="#" style="color:#B8B8B8; text-decoration:none; font-size:14px; transition:color 250ms;" style-hover="color:#FFFFFF;">{{ item }}</a>
+            </sc-for>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:12px;">
+            <span style="color:#D86A61; font-size:13px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;">Sede</span>
+            <span style="color:#B8B8B8; font-size:14px; line-height:1.5; max-width:260px;">Av. José Júlio da Costa, 1.140 - Loja 07 - Iguaçu, Ipatinga/MG - 35162-761</span>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:12px;">
+            <span style="color:#D86A61; font-size:13px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;">Fale com a Gente</span>
+            <span style="color:#FFFFFF; font-size:14px; font-weight:600;">31 3821.8387 <span style="color:#B8B8B8; font-weight:400;">— Central de Vendas</span></span>
+            <span style="color:#FFFFFF; font-size:14px; font-weight:600;">31 99168.6836 <span style="color:#B8B8B8; font-weight:400;">— Relacionamento</span></span>
+          </div>
+        </div>
+      </div>
+      <div style="height:1px; background:rgba(255,255,255,0.1);"></div>
+      <span style="color:#B8B8B8; font-size:13px;">© 2026 Raposo Empreendimentos. Todos os direitos reservados.</span>
+    </div>
+  </footer>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { galleryIndex: 0 };
+
+  componentDidMount() {
+    this._revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('is-revealed'); });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal-on-scroll').forEach(el => this._revealObserver.observe(el));
+  }
+  componentWillUnmount() {
+    if (this._revealObserver) this._revealObserver.disconnect();
+  }
+
+  navItems = ['Home', 'Sobre', 'Empreendimentos', 'Loteamentos', 'Depoimentos', 'Blog', 'Trabalhe Conosco', 'Contato'];
+
+  galleryData = ['assets/agata-01.jpg', 'assets/agata-02.jpg', 'assets/agata-05.jpg', 'assets/agata-06.jpg', 'assets/agata-04.jpg', 'assets/agata-07.jpg', 'assets/agata-03.jpg'];
+
+  galleryNext = () => this.setState(s => ({ galleryIndex: (s.galleryIndex + 1) % this.galleryData.length }));
+  galleryPrev = () => this.setState(s => ({ galleryIndex: (s.galleryIndex - 1 + this.galleryData.length) % this.galleryData.length }));
+  galleryGoTo = (i) => this.setState({ galleryIndex: i });
+
+  quickFacts = [
+    { value: 'Iguaçu', label: 'Bairro' },
+    { value: '69 m²', label: 'Área' },
+    { value: '02', label: 'Quartos' },
+    { value: '01', label: 'Vaga' },
+  ];
+
+  floorplansData = [
+    { title: 'Isométrica Tipo Frente', image: 'assets/plant-agata-frente.jpg' },
+    { title: 'Isométrica Tipo Fundos', image: 'assets/plant-agata-fundos.jpg' },
+    { title: 'Isométrica Claraboia Fundos', image: 'assets/plant-agata-claraboia-fundos.jpg' },
+    { title: 'Isométrica Cobertura Linear', image: 'assets/plant-agata-cobertura-linear.jpg' },
+  ];
+
+  progressData = [
+    { label: 'Aprovação', percent: 100 },
+    { label: 'Fundação', percent: 100 },
+    { label: 'Estrutura e Alvenaria', percent: 10 },
+    { label: 'Acabamento', percent: 0 },
+    { label: 'Revestimentos Internos e Externos', percent: 0 },
+    { label: 'Redes de Esgoto e Água', percent: 0 },
+  ];
+
+  renderVals() {
+    const { galleryIndex } = this.state;
+    return {
+      navItems: this.navItems,
+      quickFacts: this.quickFacts,
+      galleryImage: this.galleryData[galleryIndex],
+      galleryPosition: `${galleryIndex + 1} / ${this.galleryData.length}`,
+      galleryPrev: this.galleryPrev,
+      galleryNext: this.galleryNext,
+      galleryThumbs: this.galleryData.map((src, i) => ({
+        src,
+        onClick: () => this.galleryGoTo(i),
+        style: `width:88px; height:64px; flex-shrink:0; border-radius:8px; overflow:hidden; padding:0; cursor:pointer; border:2px solid ${i === galleryIndex ? '#A42B23' : 'transparent'}; opacity:${i === galleryIndex ? 1 : 0.6}; transition:all 200ms;`,
+      })),
+      floorplans: this.floorplansData,
+      progress: this.progressData.map(p => ({
+        ...p,
+        barStyle: `height:100%; width:${p.percent}%; background:#A42B23; border-radius:999px;`,
+      })),
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  body { margin: 0; font-family: 'Montserrat', sans-serif; background:#F7F2F1; }
+  a { color: #A42B23; }
+  a:hover { color: #8F241D; }
+  ::placeholder { color:#999999; }
+</style>
+</helmet>
+
+<div style="min-height:100vh; padding:40px 32px 80px;">
+
+  <div style="max-width:1360px; margin:0 auto; display:flex; flex-direction:column; gap:28px;">
+
+    <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px;">
+      <div style="display:flex; flex-direction:column; gap:4px;">
+        <span style="color:#A42B23; font-size:12px; font-weight:700; letter-spacing:2px; text-transform:uppercase;">Dashboard</span>
+        <h1 style="margin:0; color:#1E1E1E; font-family:'Playfair Display', serif; font-size:32px; font-weight:600;">Leads da Newsletter</h1>
+      </div>
+      <button onClick="{{ exportCsv }}" style="height:44px; padding:0 22px; border-radius:999px; background:#A42B23; color:#FFFFFF; border:none; font-size:13px; font-weight:600; cursor:pointer; box-shadow:0 12px 28px rgba(164,43,35,0.25); transition:background 250ms;" style-hover="background:#8F241D;">Exportar CSV</button>
+    </div>
+
+    <!-- KPI CARDS -->
+    <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:20px;" data-kpi-grid="true">
+      <sc-for list="{{ kpis }}" as="kpi" hint-placeholder-count="4">
+        <div style="background:#FFFFFF; border-radius:16px; padding:22px 24px; display:flex; flex-direction:column; gap:6px; box-shadow:0 12px 28px rgba(0,0,0,0.05);">
+          <span style="color:#666666; font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px;">{{ kpi.label }}</span>
+          <span style="color:#1E1E1E; font-family:'Playfair Display', serif; font-size:30px; font-weight:600;">{{ kpi.value }}</span>
+        </div>
+      </sc-for>
+    </div>
+
+    <!-- CHARTS -->
+    <div style="display:grid; grid-template-columns:1.3fr 1fr; gap:20px;" data-chart-grid="true">
+      <div style="background:#FFFFFF; border-radius:16px; padding:24px; box-shadow:0 12px 28px rgba(0,0,0,0.05); display:flex; flex-direction:column; gap:18px;">
+        <span style="color:#1E1E1E; font-size:14px; font-weight:700;">Leads ao longo do tempo</span>
+        <div style="display:flex; align-items:flex-end; gap:10px; height:160px;">
+          <sc-for list="{{ timeChart }}" as="pt" hint-placeholder-count="7">
+            <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:8px; height:100%; justify-content:flex-end;">
+              <div style="{{ pt.barStyle }}"></div>
+              <span style="color:#999999; font-size:11px;">{{ pt.label }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="background:#FFFFFF; border-radius:16px; padding:24px; box-shadow:0 12px 28px rgba(0,0,0,0.05); display:flex; flex-direction:column; gap:16px;">
+        <span style="color:#1E1E1E; font-size:14px; font-weight:700;">Leads por empreendimento</span>
+        <div style="display:flex; flex-direction:column; gap:14px;">
+          <sc-for list="{{ projectChart }}" as="p" hint-placeholder-count="4">
+            <div style="display:flex; flex-direction:column; gap:6px;">
+              <div style="display:flex; justify-content:space-between; font-size:12px; color:#1E1E1E; font-weight:600;">
+                <span>{{ p.name }}</span>
+                <span>{{ p.count }}</span>
+              </div>
+              <div style="width:100%; height:8px; border-radius:999px; background:#F0EAE8;">
+                <div style="{{ p.barStyle }}"></div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+
+    <!-- TABELA -->
+    <div style="background:#FFFFFF; border-radius:16px; box-shadow:0 12px 28px rgba(0,0,0,0.05); overflow:hidden;">
+      <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap; padding:20px 24px; border-bottom:1px solid #E9E9E9;">
+        <div style="display:flex; align-items:center; gap:8px; flex:1; min-width:200px; height:42px; padding:0 16px; border-radius:999px; border:1px solid #E9E9E9;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999999" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="M21 21l-4.35-4.35"></path></svg>
+          <input value="{{ search }}" onChange="{{ onSearch }}" placeholder="Buscar por nome ou e-mail" style="border:none; outline:none; flex:1; font-size:13px; font-family:'Montserrat', sans-serif; color:#1E1E1E;" />
+        </div>
+        <select value="{{ projectFilter }}" onChange="{{ onProjectFilter }}" style="height:42px; padding:0 14px; border-radius:999px; border:1px solid #E9E9E9; font-size:13px; font-family:'Montserrat', sans-serif; color:#1E1E1E; background:#FFFFFF;">
+          <option value="Todos">Todos os empreendimentos</option>
+          <sc-for list="{{ projectNames }}" as="name" hint-placeholder-count="4">
+            <option value="{{ name }}">{{ name }}</option>
+          </sc-for>
+        </select>
+        <select value="{{ statusFilter }}" onChange="{{ onStatusFilter }}" style="height:42px; padding:0 14px; border-radius:999px; border:1px solid #E9E9E9; font-size:13px; font-family:'Montserrat', sans-serif; color:#1E1E1E; background:#FFFFFF;">
+          <option value="Todos">Todos os status</option>
+          <option value="Novo">Novo</option>
+          <option value="Contatado">Contatado</option>
+          <option value="Convertido">Convertido</option>
+        </select>
+      </div>
+
+      <div style="overflow-x:auto;">
+        <table style="width:100%; border-collapse:collapse;">
+          <thead>
+            <tr style="background:#F7F2F1;">
+              <th style="text-align:left; padding:14px 24px; font-size:11px; font-weight:700; color:#666666; text-transform:uppercase; letter-spacing:0.5px;">Nome</th>
+              <th style="text-align:left; padding:14px 24px; font-size:11px; font-weight:700; color:#666666; text-transform:uppercase; letter-spacing:0.5px;">E-mail</th>
+              <th style="text-align:left; padding:14px 24px; font-size:11px; font-weight:700; color:#666666; text-transform:uppercase; letter-spacing:0.5px;">Telefone</th>
+              <th style="text-align:left; padding:14px 24px; font-size:11px; font-weight:700; color:#666666; text-transform:uppercase; letter-spacing:0.5px;">Empreendimento</th>
+              <th style="text-align:left; padding:14px 24px; font-size:11px; font-weight:700; color:#666666; text-transform:uppercase; letter-spacing:0.5px;">Data</th>
+              <th style="text-align:left; padding:14px 24px; font-size:11px; font-weight:700; color:#666666; text-transform:uppercase; letter-spacing:0.5px;">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <sc-for list="{{ filteredLeads }}" as="lead" hint-placeholder-count="6">
+              <tr style="border-top:1px solid #F0EAE8;">
+                <td style="padding:16px 24px; font-size:13px; color:#1E1E1E; font-weight:600;">{{ lead.name }}</td>
+                <td style="padding:16px 24px; font-size:13px; color:#666666;">{{ lead.email }}</td>
+                <td style="padding:16px 24px; font-size:13px; color:#666666;">{{ lead.phone }}</td>
+                <td style="padding:16px 24px; font-size:13px; color:#666666;">{{ lead.project }}</td>
+                <td style="padding:16px 24px; font-size:13px; color:#666666;">{{ lead.date }}</td>
+                <td style="padding:16px 24px;">
+                  <select value="{{ lead.status }}" onChange="{{ lead.onStatusChange }}" style="{{ lead.statusStyle }}">
+                    <option value="Novo">Novo</option>
+                    <option value="Contatado">Contatado</option>
+                    <option value="Convertido">Convertido</option>
+                  </select>
+                </td>
+              </tr>
+            </sc-for>
+          </tbody>
+        </table>
+      </div>
+
+      <sc-if value="{{ noResults }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:48px 24px; text-align:center; color:#999999; font-size:14px;">Nenhum lead encontrado com esses filtros.</div>
+      </sc-if>
+    </div>
+
+  </div>
+</div>
+
+<style>
+@media (max-width: 1100px) {
+  div[data-kpi-grid] { grid-template-columns:1fr 1fr !important; }
+  div[data-chart-grid] { grid-template-columns:1fr !important; }
+}
+@media (max-width: 560px) {
+  div[data-kpi-grid] { grid-template-columns:1fr !important; }
+}
+</style>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const STATUS_COLORS = {
+  Novo: { bg: '#F0EAE8', text: '#1E1E1E' },
+  Contatado: { bg: '#FCEBD9', text: '#9A5B10' },
+  Convertido: { bg: '#E4F0E7', text: '#1F6B3B' },
+};
+
+const MOCK_LEADS = [
+  { id: 1, name: 'Marina Souza', email: 'marina.souza@email.com', phone: '(31) 99811-2234', project: 'Riviera', date: '02/08/2026', status: 'Novo' },
+  { id: 2, name: 'Carlos Eduardo Lima', email: 'carlos.lima@email.com', phone: '(31) 98822-1190', project: 'Ágata Residence', date: '01/08/2026', status: 'Contatado' },
+  { id: 3, name: 'Fernanda Alves', email: 'fernanda.alves@email.com', phone: '(31) 99123-4455', project: 'Estância do Lago', date: '30/07/2026', status: 'Convertido' },
+  { id: 4, name: 'Rodrigo Martins', email: 'rodrigo.martins@email.com', phone: '(31) 98765-4321', project: 'Lagoa Bonita', date: '29/07/2026', status: 'Novo' },
+  { id: 5, name: 'Juliana Prado', email: 'juliana.prado@email.com', phone: '(31) 99988-7766', project: 'Riviera', date: '27/07/2026', status: 'Contatado' },
+  { id: 6, name: 'Bruno Castro', email: 'bruno.castro@email.com', phone: '(31) 98111-2233', project: 'Ágata Residence', date: '25/07/2026', status: 'Novo' },
+  { id: 7, name: 'Patrícia Nunes', email: 'patricia.nunes@email.com', phone: '(31) 99444-5566', project: 'Estância do Lago', date: '22/07/2026', status: 'Convertido' },
+  { id: 8, name: 'Diego Fonseca', email: 'diego.fonseca@email.com', phone: '(31) 98333-2211', project: 'Lagoa Bonita', date: '20/07/2026', status: 'Novo' },
+  { id: 9, name: 'Ana Beatriz Rocha', email: 'ana.rocha@email.com', phone: '(31) 99555-8899', project: 'Riviera', date: '18/07/2026', status: 'Contatado' },
+  { id: 10, name: 'Thiago Meireles', email: 'thiago.meireles@email.com', phone: '(31) 98222-3344', project: 'Ágata Residence', date: '15/07/2026', status: 'Novo' },
+];
+
+function loadLeads() {
+  try {
+    const stored = JSON.parse(localStorage.getItem('raposo_leads') || 'null');
+    if (stored && stored.length) return [...stored, ...MOCK_LEADS];
+    return MOCK_LEADS;
+  } catch (e) { return MOCK_LEADS; }
+}
+
+class Component extends DCLogic {
+  state = {
+    search: '',
+    projectFilter: 'Todos',
+    statusFilter: 'Todos',
+    leads: loadLeads(),
+  };
+
+  componentDidMount() {
+    window.addEventListener('storage', this.onStorageChange);
+    this._pollInterval = setInterval(this.refreshLeads, 4000);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('storage', this.onStorageChange);
+    if (this._pollInterval) clearInterval(this._pollInterval);
+  }
+
+  onStorageChange = (e) => { if (e.key === 'raposo_leads') this.refreshLeads(); };
+  refreshLeads = () => this.setState({ leads: loadLeads() });
+
+  onSearch = (e) => this.setState({ search: e.target.value });
+  onProjectFilter = (e) => this.setState({ projectFilter: e.target.value });
+  onStatusFilter = (e) => this.setState({ statusFilter: e.target.value });
+  setLeadStatus = (id, status) => {
+    this.setState(s => {
+      const leads = s.leads.map(l => l.id === id ? { ...l, status } : l);
+      try {
+        const stored = JSON.parse(localStorage.getItem('raposo_leads') || '[]');
+        localStorage.setItem('raposo_leads', JSON.stringify(stored.map(l => l.id === id ? { ...l, status } : l)));
+      } catch (e) {}
+      return { leads };
+    });
+  };
+
+  exportCsv = () => {
+    const leads = this.getFiltered();
+    const header = 'Nome,E-mail,Telefone,Empreendimento,Data,Status';
+    const rows = leads.map(l => [l.name, l.email, l.phone, l.project, l.date, l.status].map(v => `"${v}"`).join(','));
+    const csv = [header, ...rows].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'leads-newsletter.csv';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  getFiltered() {
+    const { leads, search, projectFilter, statusFilter } = this.state;
+    const q = search.trim().toLowerCase();
+    return leads.filter(l =>
+      (!q || l.name.toLowerCase().includes(q) || l.email.toLowerCase().includes(q)) &&
+      (projectFilter === 'Todos' || l.project === projectFilter) &&
+      (statusFilter === 'Todos' || l.status === statusFilter)
+    );
+  }
+
+  renderVals() {
+    const { leads, search, projectFilter, statusFilter } = this.state;
+    const filtered = this.getFiltered();
+
+    const projectNames = [...new Set(leads.map(l => l.project))];
+
+    const projectCounts = projectNames.map(name => ({
+      name,
+      count: leads.filter(l => l.project === name).length,
+    }));
+    const maxCount = Math.max(...projectCounts.map(p => p.count), 1);
+    const projectChart = projectCounts.map(p => ({
+      name: p.name,
+      count: p.count,
+      barStyle: `width:${(p.count / maxCount) * 100}%; height:100%; border-radius:999px; background:#A42B23;`,
+    }));
+
+    // group by week label just from date order (mock trend)
+    const timeBuckets = [
+      { label: '13 Jul', count: 1 }, { label: '17 Jul', count: 2 }, { label: '20 Jul', count: 1 },
+      { label: '25 Jul', count: 2 }, { label: '29 Jul', count: 1 }, { label: '01 Ago', count: 2 }, { label: '02 Ago', count: 1 },
+    ];
+    const maxTime = Math.max(...timeBuckets.map(t => t.count), 1);
+    const timeChart = timeBuckets.map(t => ({
+      label: t.label,
+      barStyle: `width:26px; height:${(t.count / maxTime) * 100}%; min-height:6px; border-radius:6px 6px 0 0; background:#A42B23;`,
+    }));
+
+    const kpis = [
+      { label: 'Total de Leads', value: String(leads.length) },
+      { label: 'Novos', value: String(leads.filter(l => l.status === 'Novo').length) },
+      { label: 'Contatados', value: String(leads.filter(l => l.status === 'Contatado').length) },
+      { label: 'Convertidos', value: String(leads.filter(l => l.status === 'Convertido').length) },
+    ];
+
+    const filteredLeads = filtered.map(l => {
+      const c = STATUS_COLORS[l.status];
+      return {
+        ...l,
+        onStatusChange: (e) => this.setLeadStatus(l.id, e.target.value),
+        statusStyle: `height:32px; padding:0 12px; border-radius:999px; border:none; font-size:12px; font-weight:600; cursor:pointer; background:${c.bg}; color:${c.text};`,
+      };
+    });
+
+    return {
+      search, projectFilter, statusFilter,
+      onSearch: this.onSearch, onProjectFilter: this.onProjectFilter, onStatusFilter: this.onStatusFilter,
+      exportCsv: this.exportCsv,
+      projectNames, kpis, projectChart, timeChart,
+      filteredLeads, noResults: filteredLeads.length === 0,
+    };
+  }
+}
+</script>
+</body>
+</html>

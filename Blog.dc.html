@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  body { margin: 0; font-family: 'Montserrat', sans-serif; }
+  a { color: #A42B23; }
+  a:hover { color: #8F241D; }
+  .reveal-on-scroll { opacity:0; transform:translateY(36px); transition:opacity 800ms ease, transform 800ms ease; }
+  .reveal-on-scroll.is-revealed { opacity:1; transform:translateY(0); }
+</style>
+</helmet>
+
+<div style="position:relative; width:100%; min-height:100vh; background:#F7F2F1;">
+
+  <!-- HEADER -->
+  <header style="position:sticky; top:16px; margin:0 5%; z-index:999; background:rgba(255,255,255,0.92); backdrop-filter:blur(20px); border-radius:999px; height:56px; display:flex; align-items:center; justify-content:space-between; padding:0 22px; box-shadow:0 20px 60px rgba(0,0,0,0.08);">
+    <a href="Home.dc.html" style="display:flex; align-items:center; flex-shrink:0;">
+      <img src="assets/logo-raposo-transparent.png" alt="Raposo Empreendimentos" style="height:34px; width:auto;" />
+    </a>
+    <nav style="display:flex; gap:34px;">
+      <sc-for list="{{ navItems }}" as="item" hint-placeholder-count="8">
+        <a href="#" style="color:#1E1E1E; text-decoration:none; font-size:12.5px; font-weight:500; letter-spacing:0.2px; white-space:nowrap; transition:color 300ms;" style-hover="color:#A42B23;">{{ item }}</a>
+      </sc-for>
+    </nav>
+    <div style="display:flex; gap:8px; flex-shrink:0;">
+      <a href="#" style="padding:7px 12px; border-radius:999px; border:1px solid rgba(164,43,35,0.18); color:#1E1E1E; text-decoration:none; font-size:10px; font-weight:600; white-space:nowrap; transition:all 300ms;" style-hover="background:#1E1E1E; color:#FFFFFF; border-color:#1E1E1E;">Contato</a>
+      <a href="#" style="padding:7px 14px; border-radius:999px; background:#A42B23; color:#FFFFFF; text-decoration:none; font-size:10px; font-weight:600; white-space:nowrap; box-shadow:0 18px 40px rgba(164,43,35,0.28); transition:background 300ms;" style-hover="background:#8F241D;">Fale Conosco</a>
+    </div>
+
+    <button aria-label="Menu" onClick="{{ toggleMobileMenu }}" style="display:none; background:none; border:none; flex-direction:column; gap:5px; cursor:pointer; padding:8px;" data-mobile-menu-btn="true">
+      <span style="width:26px; height:2px; background:#1E1E1E; display:block;"></span>
+      <span style="width:26px; height:2px; background:#1E1E1E; display:block;"></span>
+      <span style="width:18px; height:2px; background:#1E1E1E; display:block;"></span>
+    </button>
+  </header>
+
+  <sc-if value="{{ mobileMenuOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed; inset:0; z-index:1000; background:#FFFFFF; display:flex; flex-direction:column;">
+      <div style="display:flex; align-items:center; justify-content:space-between; padding:20px 24px;">
+        <a href="Home.dc.html" style="display:flex; align-items:center;">
+          <img src="assets/logo-raposo-transparent.png" alt="Raposo Empreendimentos" style="height:32px; width:auto;" />
+        </a>
+        <button aria-label="Fechar" onClick="{{ toggleMobileMenu }}" style="background:none; border:none; font-size:28px; color:#1E1E1E; cursor:pointer; line-height:1;">×</button>
+      </div>
+      <nav style="display:flex; flex-direction:column; gap:0; padding:8px 24px;">
+        <sc-for list="{{ navItems }}" as="item" hint-placeholder-count="8">
+          <a href="#" onClick="{{ toggleMobileMenu }}" style="padding:16px 0; border-bottom:1px solid rgba(0,0,0,0.06); color:#1E1E1E; text-decoration:none; font-size:17px; font-weight:500;">{{ item }}</a>
+        </sc-for>
+      </nav>
+      <div style="display:flex; flex-direction:column; gap:10px; padding:16px 24px; margin-top:auto;">
+        <a href="#" style="height:46px; box-sizing:border-box; display:flex; align-items:center; justify-content:center; border-radius:999px; border:1px solid rgba(164,43,35,0.24); color:#1E1E1E; text-decoration:none; font-size:14px; font-weight:600;">Contato</a>
+        <a href="#" style="height:46px; box-sizing:border-box; display:flex; align-items:center; justify-content:center; border-radius:999px; background:#A42B23; color:#FFFFFF; text-decoration:none; font-size:14px; font-weight:600;">Fale Conosco</a>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- HERO DO BLOG -->
+  <section style="padding:72px 24px 40px;">
+    <div class="reveal-on-scroll" style="max-width:1280px; margin:0 auto; display:flex; flex-direction:column; gap:16px;">
+      <span style="color:#A42B23; font-size:12px; font-weight:700; letter-spacing:2px; text-transform:uppercase;">Blog</span>
+      <h1 style="margin:0; color:#1E1E1E; font-family:'Playfair Display', serif; font-size:44px; font-weight:600;">Notícias dos nossos empreendimentos</h1>
+      <p style="margin:0; max-width:620px; color:#666666; font-size:16px; line-height:1.7;">Acompanhe novidades, avanços de obra e lançamentos da Raposo Empreendimentos.</p>
+    </div>
+  </section>
+
+  <!-- FILTROS -->
+  <section style="padding:0 24px 40px;">
+    <div style="max-width:1280px; margin:0 auto; display:flex; gap:10px; flex-wrap:wrap;">
+      <sc-for list="{{ filters }}" as="f" hint-placeholder-count="5">
+        <button onClick="{{ f.onClick }}" style="{{ f.style }}">{{ f.label }}</button>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- GRID DE POSTS -->
+  <section style="padding:0 24px 96px;">
+    <div class="reveal-on-scroll" style="max-width:1280px; margin:0 auto; display:grid; grid-template-columns:repeat(3, 1fr); gap:28px;" data-blog-grid="true">
+      <sc-for list="{{ posts }}" as="post" hint-placeholder-count="6">
+        <a href="#" style="display:flex; flex-direction:column; gap:0; background:#FFFFFF; border-radius:20px; overflow:hidden; text-decoration:none; box-shadow:0 14px 32px rgba(0,0,0,0.06); transition:transform 300ms, box-shadow 300ms;" style-hover="transform:translateY(-6px); box-shadow:0 22px 44px rgba(0,0,0,0.1);">
+          <div style="position:relative; aspect-ratio:4/3; background:#2B1512;">
+            <img src="{{ post.image }}" alt="{{ post.title }}" style="width:100%; height:100%; object-fit:cover;" />
+            <span style="position:absolute; top:14px; left:14px; padding:6px 14px; border-radius:999px; background:#A42B23; color:#FFFFFF; font-size:11px; font-weight:600; letter-spacing:1px; text-transform:uppercase;">{{ post.tag }}</span>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:10px; padding:24px;">
+            <span style="color:#999999; font-size:12px; font-weight:500;">{{ post.date }}</span>
+            <h3 style="margin:0; color:#1E1E1E; font-family:'Playfair Display', serif; font-size:20px; font-weight:600; line-height:1.3;">{{ post.title }}</h3>
+            <p style="margin:0; color:#666666; font-size:14px; line-height:1.6;">{{ post.excerpt }}</p>
+            <span style="color:#A42B23; font-size:13px; font-weight:600; margin-top:6px;">Ler mais →</span>
+          </div>
+        </a>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="background:#1E1E1E; padding:72px 24px 40px;">
+    <div style="max-width:1280px; margin:0 auto; display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:40px;" data-footer-grid="true">
+      <div style="display:flex; flex-direction:column; gap:20px;">
+        <img src="assets/logo-raposo-footer.png" alt="Raposo Empreendimentos" style="height:38px; width:auto; align-self:flex-start;" />
+        <span style="color:rgba(255,255,255,0.7); font-size:14px;">Construindo mais que endereços</span>
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <span style="color:#D86A61; font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;">Siga as nossas redes sociais</span>
+          <div style="display:flex; gap:10px;">
+            <sc-for list="{{ socials }}" as="social" hint-placeholder-count="2">
+              <a href="#" aria-label="{{ social.name }}" style="width:36px; height:36px; border-radius:999px; background:rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center; text-decoration:none; transition:background 250ms;" style-hover="background:#A42B23;">
+                <img src="{{ social.icon }}" alt="{{ social.name }}" style="width:22px; height:22px; object-fit:contain;" />
+              </a>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:14px;">
+        <span style="color:#D86A61; font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;">Sede</span>
+        <span style="color:rgba(255,255,255,0.65); font-size:14px; line-height:1.5;">Av. José Júlio da Costa, 1.140 - Loja 07 - Iguaçu, Ipatinga/MG - 35162-761</span>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:14px;">
+        <span style="color:#D86A61; font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;">Fale com a Gente</span>
+        <div style="display:flex; flex-direction:column; gap:2px;">
+          <span style="color:#FFFFFF; font-size:14px; font-weight:600;">31 3821.8387</span>
+          <span style="color:rgba(255,255,255,0.65); font-size:13px;">Central de Vendas</span>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:2px;">
+          <span style="color:#FFFFFF; font-size:14px; font-weight:600;">31 99168.6836</span>
+          <span style="color:rgba(255,255,255,0.65); font-size:13px;">Relacionamento com o Cliente</span>
+        </div>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        <span style="color:#D86A61; font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:2px;">Navegação</span>
+        <sc-for list="{{ footerNav }}" as="item" hint-placeholder-count="8">
+          <a href="#" style="color:rgba(255,255,255,0.65); text-decoration:none; font-size:14px; transition:color 250ms;" style-hover="color:#FFFFFF;">{{ item }}</a>
+        </sc-for>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<style>
+@media (max-width: 1400px) {
+  header nav { display:none !important; }
+  header > div:nth-child(3) { display:none !important; }
+  header > button[data-mobile-menu-btn] { display:flex !important; }
+}
+@media (max-width: 900px) {
+  section div[data-blog-grid] { grid-template-columns:1fr !important; }
+  footer div[data-footer-grid] { grid-template-columns:1fr 1fr !important; }
+}
+@media (max-width: 560px) { footer div[data-footer-grid] { grid-template-columns:1fr !important; } }
+</style>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { activeFilter: 'Todos', mobileMenuOpen: false };
+  toggleMobileMenu = () => this.setState(s => ({ mobileMenuOpen: !s.mobileMenuOpen }));
+
+  componentDidMount() {
+    this._revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('is-revealed'); });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal-on-scroll').forEach(el => this._revealObserver.observe(el));
+  }
+  componentWillUnmount() {
+    if (this._revealObserver) this._revealObserver.disconnect();
+  }
+
+  navItems = ['Home', 'Sobre', 'Empreendimentos', 'Loteamentos', 'Depoimentos', 'Blog', 'Trabalhe Conosco', 'Contato'];
+  footerNav = ['Home', 'Sobre', 'Empreendimentos', 'Loteamentos', 'Depoimentos', 'Blog', 'Trabalhe Conosco', 'Contato'];
+  socials = [
+    { name: 'Instagram', icon: 'assets/social-instagram-trans.png' },
+    { name: 'YouTube', icon: 'assets/social-youtube-trans.png' },
+  ];
+
+  filterLabels = ['Todos', 'Riviera', 'Ágata Residence', 'Estância do Lago', 'Lagoa Bonita'];
+
+  postsData = [
+    { tag: 'Riviera', date: '05 Ago 2026', title: 'Riviera avança para 65% de unidades vendidas', excerpt: 'Empreendimento no bairro Bela Vista segue em obras com forte procura.', image: 'assets/agata-01.jpg' },
+    { tag: 'Ágata Residence', date: '28 Jul 2026', title: 'Ágata Residence: previsão de entrega em Dez/2025', excerpt: 'Conheça os diferenciais do novo residencial no bairro Iguaçu.', image: 'assets/agata-02.jpg' },
+    { tag: 'Estância do Lago', date: '15 Jul 2026', title: 'Estância do Lago tem 100% dos lotes vendidos', excerpt: 'Loteamento com lagoa e piscina de borda infinita esgota unidades.', image: 'assets/agata-05.jpg' },
+    { tag: 'Lagoa Bonita', date: '02 Jul 2026', title: 'Lagoa Bonita vende 90% das unidades em 2 dias', excerpt: 'Lançamento supera expectativas de vendas na primeira semana.', image: 'assets/agata-06.jpg' },
+    { tag: 'Riviera', date: '20 Jun 2026', title: 'Riviera Aqua Lounge: um novo conceito de lazer', excerpt: 'Espaço exclusivo para moradores une bem-estar e sofisticação.', image: 'assets/agata-04.jpg' },
+    { tag: 'Ágata Residence', date: '10 Jun 2026', title: 'Plantas do Ágata Residence já estão disponíveis', excerpt: 'Confira as opções de plantas tipo frente, fundos e cobertura linear.', image: 'assets/agata-07.jpg' },
+  ];
+
+  setFilter = (f) => this.setState({ activeFilter: f });
+
+  renderVals() {
+    const { activeFilter } = this.state;
+    const filters = this.filterLabels.map(label => ({
+      label,
+      onClick: () => this.setFilter(label),
+      style: `height:38px; padding:0 18px; border-radius:999px; font-size:13px; font-weight:500; cursor:pointer; transition:all 250ms; ${label === activeFilter ? 'background:#A42B23; color:#FFFFFF; border:1px solid #A42B23;' : 'background:transparent; color:#1E1E1E; border:1px solid rgba(164,43,35,0.16);'}`,
+    }));
+    const posts = this.postsData.filter(p => activeFilter === 'Todos' || p.tag === activeFilter);
+    return {
+      navItems: this.navItems,
+      footerNav: this.footerNav,
+      socials: this.socials,
+      filters,
+      posts,
+      mobileMenuOpen: this.state.mobileMenuOpen,
+      toggleMobileMenu: this.toggleMobileMenu,
+    };
+  }
+}
+</script>
+</body>
+</html>
